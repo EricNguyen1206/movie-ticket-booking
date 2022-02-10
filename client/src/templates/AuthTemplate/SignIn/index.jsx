@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-    Avatar,
     Box,
     Button,
     Checkbox,
@@ -13,7 +12,6 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
     FacebookRounded,
@@ -21,7 +19,7 @@ import {
     MailOutlineRounded,
     Reddit,
 } from "@mui/icons-material";
-import logo from "../assets/images/logo.png";
+import logo from "../../../assets/images/logo.png";
 import useStyles from "./styles";
 
 function Copyright(props) {
@@ -44,7 +42,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Login() {
+export default function SigIn() {
     const classes = useStyles();
 
     const handleSubmit = (event) => {
@@ -116,21 +114,23 @@ export default function Login() {
                             </Typography>
                         </Box>
                     </Box>
-                    <Box component="div" class={classes.sideContact}>
-                        <Typography
-                            component="p"
-                            variant="span"
-                            style={{
-                                backgroundColor: "transparent",
-                                color: "#FFF",
-                                fontFamily: "Arial, Helvetica, sans-serif",
-                                fontSize: "18px",
-                                fontWeight: "300",
-                                float: "left",
-                            }}
-                        >
-                            Sdt: 0123456789
-                        </Typography>
+                    <Box xs={false} sm={4} md={7} id="box">
+                        <Box component="div" className={classes.sideContact}>
+                            <Typography
+                                component="p"
+                                variant="span"
+                                style={{
+                                    backgroundColor: "transparent",
+                                    color: "#FFF",
+                                    fontFamily: "Arial, Helvetica, sans-serif",
+                                    fontSize: "18px",
+                                    fontWeight: "300",
+                                    float: "left",
+                                }}
+                            >
+                                Sdt: 0123456789
+                            </Typography>
+                        </Box>
                     </Box>
                 </Grid>
                 <Grid
@@ -153,20 +153,22 @@ export default function Login() {
                         }}
                     >
                         <Container>
-                            <Box component="div" className={classes.brand}>
-                                <img
-                                    src={logo}
-                                    alt="logo"
-                                    className={classes.logo}
-                                />
-                                <Typography
-                                    component="h1"
-                                    variant="h4"
-                                    className={classes.brandName}
-                                >
-                                    Loto Cinemax
-                                </Typography>
-                            </Box>
+                            <Link color="inherit" href="/">
+                                <Box component="div" className={classes.brand}>
+                                    <img
+                                        src={logo}
+                                        alt="logo"
+                                        className={classes.logo}
+                                    />
+                                    <Typography
+                                        component="h1"
+                                        variant="h4"
+                                        className={classes.brandName}
+                                    >
+                                        Loto Cinemax
+                                    </Typography>
+                                </Box>
+                            </Link>{" "}
                         </Container>
                         <Typography component="h1" variant="h5">
                             Đăng nhập tài khoản
@@ -222,7 +224,13 @@ export default function Login() {
                                 }
                                 label="Remember me"
                             />
-                            <Box component="div">
+                            <Box
+                                component="div"
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
                                 <Button
                                     type="submit"
                                     fullWidth

@@ -1,5 +1,4 @@
-import bg from "../assets/images/bg.jpg";
-import logo from "../assets/images/logo.png";
+import bg from "../../../assets/images/bg.jpg";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -11,11 +10,11 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "300px",
     },
     sideContact: {
-        position: "absolute",
+        position: "relative",
         bottom: "0",
         width: "100%",
         height: "40px",
-        margin: "0 38px",
+        margin: "290px 38px 0",
         borderTop: "2px solid #FFF",
     },
     paperContainer: {
@@ -39,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-end",
-        // marginTop: '84px',
     },
     loginBtn: {
         backgroundColor: "#DF2525 !important",
