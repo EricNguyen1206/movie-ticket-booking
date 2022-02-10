@@ -9,16 +9,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Admin.belongsTo(Account, {
+      Admin.belongsTo(models.Account, {
         foreignKey: "email",
         targetKey: "email",
-        as: "accountData",
+        as: "adminData",
       });
     }
   }
   Admin.init(
     {
-      email: DataTypes.STRING(40),
+      email: { type: DataTypes.STRING(40), primaryKey: true },
       firstName: DataTypes.STRING(15),
       lastName: DataTypes.STRING(30),
       avatar: DataTypes.BLOB("long"),

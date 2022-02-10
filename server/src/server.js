@@ -6,6 +6,9 @@ const port = process.env.PORT || 5000;
 const initRoutes = require("./routes/web");
 const connectDB = require("./configs/db.config");
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Connect to DB;
 connectDB();
 

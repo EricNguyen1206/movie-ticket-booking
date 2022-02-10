@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Movie.init(
     {
-      movieId: DataTypes.INTEGER,
+      movieId: { type: DataTypes.INTEGER, primaryKey: true },
       name: DataTypes.STRING(100),
       description: DataTypes.STRING,
       image: DataTypes.BLOB("long"),
