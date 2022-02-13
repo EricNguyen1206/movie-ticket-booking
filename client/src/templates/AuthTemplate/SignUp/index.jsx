@@ -5,27 +5,27 @@ import {
     Checkbox,
     Container,
     CssBaseline,
-    FormControlLabel,
     Grid,
     Link,
     Paper,
     TextField,
     Typography,
+    Radio,
+    RadioGroup,
+    FormLabel,
+    FormControl,
+    FormControlLabel,
 } from "@mui/material";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
-    FacebookRounded,
-    Twitter,
-    MailOutlineRounded,
     Reddit,
+    Twitter,
+    FacebookRounded,
+    MailOutlineRounded,
 } from "@mui/icons-material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { LocalizationProvider, DatePicker } from "@mui/lab";
+import { useNavigate } from "react-router-dom";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import logo from "../../../assets/images/logo.png";
 import useStyles from "./styles";
 
@@ -53,6 +53,7 @@ export default function SigUp() {
     const [birthday, setBirthday] = React.useState("2001-1-1");
     const [remember, setRemember] = React.useState(false);
     const classes = useStyles();
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -67,6 +68,17 @@ export default function SigUp() {
             birthday: birthday,
             rememberMe: remember,
         });
+        const currentUser = {
+            email: data.get("email"),
+            password: data.get("password"),
+            gender: data.get("gender"),
+            firstname: data.get("firstname"),
+            lastname: data.get("lastname"),
+            birthday: birthday,
+        };
+        localStorage.removeItem("currentUser");
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        navigate("/");
     };
 
     return (

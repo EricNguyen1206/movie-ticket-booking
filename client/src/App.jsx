@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeTemplate from "./templates/HomeTemplate";
 import PageNotFound from "./templates/PageNotFound";
-import { routeHome, routeAuth } from "./routes";
+import { routeHome, routeAuth, routeAdmin } from "./routes";
 import React, { Suspense } from "react";
 import "./App.css";
 
@@ -20,7 +20,23 @@ function App() {
             });
         }
     };
+
     const renderLayoutAuth = (routes) => {
+        if (routes && routes.length > 0) {
+            return routes.map((item, index) => {
+                return (
+                    <Route
+                        key={index}
+                        exact={item.exact}
+                        path={item.path}
+                        element={item.element}
+                    />
+                );
+            });
+        }
+    };
+
+    const renderLayoutAdmin = (routes) => {
         if (routes && routes.length > 0) {
             return routes.map((item, index) => {
                 return (
@@ -42,6 +58,7 @@ function App() {
                     <Routes>
                         {renderLayoutHome(routeHome)}
                         {renderLayoutAuth(routeAuth)}
+                        {renderLayoutAdmin(routeAdmin)}
                         <Route path="" element={<PageNotFound />} />
                     </Routes>
                 </Suspense>
