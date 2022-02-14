@@ -23,7 +23,7 @@ let checkEmailIsExist = (email) => {
   });
 };
 
-let signUp = async (data) => {
+let signUp = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       let emailIsExist = await checkEmailIsExist(data.email);
@@ -54,7 +54,7 @@ let signUp = async (data) => {
         let newUser = await db.User.create(userItem);
 
         let APP_CLIENT_URL = process.env.APP_CLIENT_URL;
-        let linkVerify = `${APP_CLIENT_URL}?token=${accountItem.verifyToken}&email=${accountItem.email}`;
+        let linkVerify = `${APP_CLIENT_URL}/verify-account?token=${accountItem.verifyToken}&email=${accountItem.email}`;
         emailService
           .sendMail(
             data.email,
@@ -102,6 +102,36 @@ let signUp = async (data) => {
   });
 };
 
+let verifyToken = (token, email) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let account = await db.Account.findOne({
+        where: { email: email, verifyToken: token },
+      });
+      if (account) {
+        await account.update(
+          { isActive: true, verifyToken: null },
+          { where: { email: email, verifyToken: token } }
+        );
+      } else {
+        return resolve({
+          success: false,
+          message: transErrorsVi.token_undefined,
+        });
+      }
+
+      resolve({ success: true, message: transSuccessVi.account_actived });
+    } catch (err) {
+      console.log("err", err);
+      reject({
+        success: false,
+        message: transErrorsVi.server_error,
+      });
+    }
+  });
+};
+
 module.exports = {
   signUp,
+  verifyToken,
 };

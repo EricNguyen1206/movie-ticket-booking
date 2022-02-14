@@ -13,6 +13,8 @@ const initRoutes = (app) => {
   });
 
   router.post("/sign-up", authController.signUp);
+  router.post("/verify-account", authController.verifyToken);
+  router.post("/sign-in", authController.signIn);
 
   return app.use("/api", router);
 };
