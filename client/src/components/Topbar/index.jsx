@@ -9,12 +9,38 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+import Avatar from "@mui/material/Avatar";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../../theme";
 import { Link } from "react-router-dom";
+import useStyles from "./style";
+import Logo from "../Logo";
+import { useSelector, useDispatch } from "react-redux";
+import { signout } from "../../app/actions/AuthAction/index";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = [
+    {
+        title: "PHIM",
+        path: "movies",
+    },
+    {
+        title: "CỤM RẠP",
+        path: "cineplex",
+    },
+    {
+        title: "LIÊN HỆ",
+        path: "contact",
+    },
+];
 
 const Topbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const currentUser = useSelector((state) => state.currentUser);
+    const classes = useStyles();
+    const dispatch = useDispatch();
+
+    console.log("topbar", currentUser);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -24,105 +50,134 @@ const Topbar = () => {
         setAnchorElNav(null);
     };
 
-    return (
-        <AppBar position="static">
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-                    >
-                        <Link to="/">Home</Link>
-                    </Typography>
+    const handleSignout = () => {
+        console.log(currentUser);
+        dispatch(signout());
+    };
 
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: "flex", md: "none" },
-                        }}
-                    >
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
+    return (
+        <ThemeProvider theme={theme}>
+            <AppBar id="appbar" className={classes.root}>
+                <Container maxWidth="xl">
+                    <Toolbar disableGutters>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ mt: 1, display: { xs: "none", md: "flex" } }}
                         >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "left",
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: "top",
-                                horizontal: "left",
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
+                            <Link to="/" className={classes.link}>
+                                <Logo className={classes.logo} />
+                            </Link>
+                        </Typography>
+
+                        <Box
+                            id="navbar"
                             sx={{
-                                display: { xs: "block", md: "none" },
+                                flexGrow: 1,
+                                display: { xs: "flex", md: "none" },
+                                justifyContent: "flex-start",
+                            }}
+                        >
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleOpenNavMenu}
+                                color="primary"
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorElNav}
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "left",
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "left",
+                                }}
+                                open={Boolean(anchorElNav)}
+                                onClose={handleCloseNavMenu}
+                                sx={{
+                                    display: { xs: "block", md: "none" },
+                                }}
+                            >
+                                {pages.map((page) => (
+                                    <MenuItem
+                                        key={page.title}
+                                        onClick={handleCloseNavMenu}
+                                    >
+                                        <Link
+                                            to={`#${page.path}`}
+                                            className={classes.link}
+                                        >
+                                            <Button className={classes.navLink}>
+                                                {page.title}
+                                            </Button>
+                                        </Link>
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </Box>
+                        <Box
+                            sx={{
+                                flexGrow: 1,
+                                display: { xs: "none", md: "flex" },
+                                justifyContent: "center",
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem
-                                    key={page}
-                                    onClick={handleCloseNavMenu}
+                                <Link
+                                    key={page.title}
+                                    to={`#${page.path}`}
+                                    className={classes.link}
                                 >
-                                    <Typography textAlign="center">
-                                        {page}
-                                    </Typography>
-                                </MenuItem>
+                                    <Button
+                                        onClick={handleCloseNavMenu}
+                                        sx={{
+                                            my: 2,
+                                        }}
+                                        className={classes.navLink}
+                                    >
+                                        {page.title}
+                                    </Button>
+                                </Link>
                             ))}
-                        </Menu>
-                    </Box>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: "flex", md: "none" },
-                        }}
-                    >
-                        <Link to="/">Home</Link>
-                    </Typography>
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: "none", md: "flex" },
-                        }}
-                    >
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: "white", display: "block" }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
-                    </Box>
+                        </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Link to="/signin">
-                            <Button color="inherit">Đăng nhập</Button>
-                        </Link>
-                        |
-                        <Link to="/signup">
-                            <Button color="inherit">Đăng ký</Button>
-                        </Link>
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar>
+                        <Box sx={{ flexGrow: 0, display: "flex" }}>
+                            {currentUser.email ? (
+                                <Button
+                                    className={classes.btnLink}
+                                    onClick={() => handleSignout()}
+                                >
+                                    Đăng xuất
+                                </Button>
+                            ) : (
+                                <>
+                                    <Link to="/signin" className={classes.link}>
+                                        <Button className={classes.btnLink}>
+                                            Đăng nhập
+                                        </Button>
+                                    </Link>
+                                    <Divider orientation="vertical" flexItem />
+                                    <Link to="/signup" className={classes.link}>
+                                        <Button className={classes.btnLink}>
+                                            Đăng ký
+                                        </Button>
+                                    </Link>
+                                </>
+                            )}
+                        </Box>
+                    </Toolbar>
+                </Container>
+            </AppBar>
+        </ThemeProvider>
     );
 };
 export default Topbar;
