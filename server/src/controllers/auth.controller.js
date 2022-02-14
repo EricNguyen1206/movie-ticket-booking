@@ -27,9 +27,28 @@ let signUp = async (req, res) => {
   }
 };
 
-let signIn = async (req, res) => {};
+let signIn = async (req, res) => {
+  try {
+    let { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(200)
+        .json({ success: false, message: transErrorsVi.signin_failed });
+    }
 
-let verifyToken = async (req, res) => {
+    let response = await authService.signIn(email, password);
+
+    return res.status(200).json(response);
+  } catch (err) {
+    console.log("err", err);
+    return res.status(500).json({
+      success: false,
+      message: transErrorsVi.server_error,
+    });
+  }
+};
+
+let verifyAccount = async (req, res) => {
   try {
     let { token, email } = req.body;
     if (!email) {
@@ -43,7 +62,7 @@ let verifyToken = async (req, res) => {
         .status(200)
         .json({ success: false, message: transErrorsVi.token_undefined });
     }
-    let response = await authService.verifyToken(token, email);
+    let response = await authService.verifyAccount(token, email);
 
     return res.status(200).json(response);
   } catch (err) {
@@ -55,8 +74,15 @@ let verifyToken = async (req, res) => {
   }
 };
 
+let check = async (req, res) => {
+  return res
+    .status(200)
+    .json({ success: true, message: "check access token successfully" });
+};
+
 module.exports = {
   signUp,
-  verifyToken,
+  verifyAccount,
   signIn,
+  check,
 };
