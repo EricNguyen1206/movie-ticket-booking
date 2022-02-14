@@ -5,6 +5,7 @@ const { ROLE } = require("../helpers/constants");
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 const emailService = require("./email.service");
+const { generateToken } = require("../helpers/jwt");
 
 let salt = bcrypt.genSaltSync(10);
 
@@ -102,7 +103,7 @@ let signUp = (data) => {
   });
 };
 
-let verifyToken = (token, email) => {
+let verifyAccount = (token, email) => {
   return new Promise(async (resolve, reject) => {
     try {
       let account = await db.Account.findOne({
@@ -131,7 +132,56 @@ let verifyToken = (token, email) => {
   });
 };
 
+let signIn = (email, password) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let account = await db.Account.findOne({ where: { email } });
+      if (!account) {
+        return resolve({
+          success: false,
+          message: transErrorsVi.signin_failed,
+        });
+      } else {
+        if (!account.isActive) {
+          return resolve({
+            success: false,
+            message: transErrorsVi.account_not_active,
+          });
+        }
+
+        if (!bcrypt.compareSync(password, account.password)) {
+          return resolve({
+            success: false,
+            message: transErrorsVi.signin_failed,
+          });
+        }
+      }
+
+      let user = await db.User.findOne({
+        where: { email },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      });
+
+      // let userInfo = { user, roleId: account.roleId };
+      user.roleId = account.roleId;
+
+      let token = await generateToken({ email: user.email });
+
+      resolve({
+        success: true,
+        message: transSuccessVi.loginSuccess(user.firstName),
+        user,
+        token,
+      });
+    } catch (err) {
+      console.log("err", err);
+      reject({ success: false, message: transErrorsVi.server_error });
+    }
+  });
+};
+
 module.exports = {
   signUp,
-  verifyToken,
+  verifyAccount,
+  signIn,
 };

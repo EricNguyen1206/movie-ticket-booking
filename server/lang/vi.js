@@ -6,10 +6,10 @@ const transErrorsVi = {
   account_removed:
     "Tài khoản này đã bị dỡ khỏi hệ thống, nếu cho rằng đây là hiêu lầm, vui lòng liên hệ với bộ phần hỗ  trợ của chúng tôi.",
   account_not_active:
-    "Email đã đăng ký nhưng chưa được Active tài khoản, vui lòng kiểm tra email hoặc liên hệ với bộ phần hỗ  trợ của chúng tôi.",
+    "Email đã đăng ký nhưng chưa được Active tài khoản, vui lòng kiểm tra email hoặc liên hệ với bộ phần hỗ trợ của chúng tôi.",
   account_undefined: "Tài khoản này không tồn tại.",
   token_undefined: "Token không tồn tại!",
-  login_failed: "Sai tài khoản hoặc mật khẩu!",
+  signin_failed: "Sai tài khoản hoặc mật khẩu!",
   server_error: "Có lỗi phía server",
 };
 
