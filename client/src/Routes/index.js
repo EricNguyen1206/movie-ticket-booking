@@ -6,24 +6,24 @@ const SignUp = React.lazy(() => import("../templates/AuthTemplate/SignUp"));
 const AdminTemplate = React.lazy(() => import("../templates/AdminTemplate"));
 
 const routeHome = [
-    {
-        exact: true,
-        path: "/",
-        element: <Home />,
-    },
+  {
+    exact: true,
+    path: "/",
+    element: <Home />,
+  },
 ];
 
 const routeAuth = [
-    {
-        exact: false,
-        path: "/signin",
-        element: <SignIn />,
-    },
-    {
-        exact: false,
-        path: "/signup",
-        element: <SignUp />,
-    },
+  {
+    exact: false,
+    path: "/signin",
+    element: <SignIn />,
+  },
+  {
+    exact: false,
+    path: "/signup",
+    element: <SignUp />,
+  },
 ];
 
 const routeAdmin = [

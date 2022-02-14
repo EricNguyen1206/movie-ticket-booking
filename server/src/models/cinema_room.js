@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Cinema_room.belongsTo(Room, {
+      Cinema_room.belongsTo(models.Room, {
         foreignKey: "room_name",
         targetKey: "name",
         as: "roomNameData",
       });
 
-      Cinema_room.belongsTo(Cinema, {
+      Cinema_room.belongsTo(models.Cinema, {
         foreignKey: "cinemaId",
         targetKey: "cinemaId",
         as: "cinemaData",
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Cinema_room.init(
     {
-      cinemaId: DataTypes.INTEGER,
+      cinemaId: { type: DataTypes.INTEGER, primaryKey: true },
       room_name: DataTypes.STRING(10),
     },
     {

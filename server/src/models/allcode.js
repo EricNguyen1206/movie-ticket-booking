@@ -9,12 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Allcode.hasMany(Account, { foreignKey: "roleId", as: "roleData" });
+      Allcode.hasMany(models.Account, { foreignKey: "roleId", as: "roleData" });
     }
   }
   Allcode.init(
     {
-      keyMap: DataTypes.STRING(10),
+      keyMap: { type: DataTypes.STRING(10), primaryKey: true },
       type: DataTypes.STRING(30),
       value: DataTypes.STRING,
     },

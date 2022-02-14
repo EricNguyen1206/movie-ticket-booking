@@ -8,16 +8,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Passwordreset.belongsTo(Account, {
+      Passwordreset.belongsTo(models.Account, {
         foreignKey: "email",
         targetKey: "email",
-        as: "accountData",
+        as: "userPwData",
       });
     }
   }
   Passwordreset.init(
     {
-      email: DataTypes.STRING(40),
+      email: { type: DataTypes.STRING(40), primaryKey: true },
       verifyToken: DataTypes.STRING,
       expires: DataTypes.DATE,
     },

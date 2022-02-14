@@ -9,6 +9,7 @@ let connectDB = async () => {
   const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
     host: DB_HOST,
     dialect: "mysql",
+    logging: false,
   });
 
   try {

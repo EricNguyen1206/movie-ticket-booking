@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Room.hasMany(Cinema_room, {
+      Room.hasMany(models.Cinema_room, {
         foreignKey: "room_name",
         as: "roomNameData",
       });
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Room.init(
     {
-      name: DataTypes.STRING(10),
+      name: { type: DataTypes.STRING(10), primaryKey: true },
       numOfChair: DataTypes.INTEGER,
     },
     {

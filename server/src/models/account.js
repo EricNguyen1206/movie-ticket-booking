@@ -9,23 +9,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Account.belongsTo(Allcode, {
+      Account.belongsTo(models.Allcode, {
         foreignKey: "roleId",
         targetKey: "keyMap",
         as: "roleData",
       });
 
-      Account.hasOne(User, { foreignKey: "email", as: "accountData" });
-      Account.hasOne(Admin, { foreignKey: "email", as: "accountData" });
-      Account.hasMany(Passwordreset, {
+      Account.hasOne(models.User, { foreignKey: "email", as: "userData" });
+      Account.hasOne(models.Admin, { foreignKey: "email", as: "adminData" });
+      Account.hasMany(models.Passwordreset, {
         foreignKey: "email",
-        as: "accountData",
+        as: "userPwData",
       });
     }
   }
   Account.init(
     {
-      email: DataTypes.STRING(40),
+      email: { type: DataTypes.STRING(40), primaryKey: true },
       password: DataTypes.STRING,
       roleId: DataTypes.STRING,
       isActive: DataTypes.BOOLEAN,
