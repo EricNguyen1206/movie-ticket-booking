@@ -21,6 +21,9 @@ import {
 } from "@mui/icons-material";
 import logo from "../../../assets/images/logo.png";
 import useStyles from "./styles";
+import { useDispatch, useSelector } from "react-redux";
+import { signin } from "../../../app/actions/AuthAction";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
     return (
@@ -44,15 +47,25 @@ const theme = createTheme();
 
 export default function SigIn() {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const AccountList = useSelector((state) => state.AccountList);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
-        console.log({
+        const user = {
             email: data.get("email"),
             password: data.get("password"),
-        });
+        };
+        const account = AccountList.find((acc) => acc.email === user.email);
+        if (account && account.password === user.password) {
+            dispatch(signin(account));
+            navigate("/");
+        } else {
+            alert("Error, incorrect email or password!");
+        }
     };
 
     return (
