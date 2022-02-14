@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeTemplate from "./templates/HomeTemplate";
 import PageNotFound from "./templates/PageNotFound";
-import { routeHome, routeAuth } from "./routes";
+import { routeHome, routeAuth } from "./Routes/";
 import React, { Suspense } from "react";
 import "./App.css";
 

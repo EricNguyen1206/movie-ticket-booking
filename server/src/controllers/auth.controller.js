@@ -22,7 +22,6 @@ let signUp = async (req, res) => {
 
     return res.status(200).json(response);
   } catch (err) {
-    
     return res.status(500).json({ success: false, message: null, error: err });
   }
 };
