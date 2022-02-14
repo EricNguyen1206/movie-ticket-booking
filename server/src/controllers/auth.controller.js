@@ -1,4 +1,5 @@
 const authService = require("../services/auth.service");
+const { transErrorsVi } = require("../../lang/vi");
 
 let signUp = async (req, res) => {
   try {
@@ -26,6 +27,36 @@ let signUp = async (req, res) => {
   }
 };
 
+let signIn = async (req, res) => {};
+
+let verifyToken = async (req, res) => {
+  try {
+    let { token, email } = req.body;
+    if (!email) {
+      return res
+        .status(200)
+        .json({ success: false, message: transErrorsVi.email_not_found });
+    }
+
+    if (!token) {
+      return res
+        .status(200)
+        .json({ success: false, message: transErrorsVi.token_undefined });
+    }
+    let response = await authService.verifyToken(token, email);
+
+    return res.status(200).json(response);
+  } catch (err) {
+    console.log("err", err);
+    return res.status(500).json({
+      success: false,
+      message: transErrorsVi.server_error,
+    });
+  }
+};
+
 module.exports = {
   signUp,
+  verifyToken,
+  signIn,
 };
