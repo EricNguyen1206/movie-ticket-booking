@@ -4,7 +4,6 @@ import {
     Button,
     Checkbox,
     Container,
-    CssBaseline,
     Grid,
     Link,
     Paper,
@@ -28,6 +27,9 @@ import { useNavigate } from "react-router-dom";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import logo from "../../../assets/images/logo.png";
 import useStyles from "./styles";
+import Validator from "../Validator";
+import { useDispatch } from "react-redux";
+import { signup } from "../../../app/actions/Auth";
 
 function Copyright(props) {
     return (
@@ -38,8 +40,8 @@ function Copyright(props) {
             {...props}
         >
             {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="/">
+                Lotte Cinemax
             </Link>{" "}
             {new Date().getFullYear()}
             {"."}
@@ -52,7 +54,14 @@ const theme = createTheme();
 export default function SigUp() {
     const [birthday, setBirthday] = React.useState("2001-1-1");
     const [remember, setRemember] = React.useState(false);
+    const [checkFirstName, setCheckFirstName] = React.useState(true);
+    const [checkLastName, setCheckLastName] = React.useState(true);
+    const [checkEmail, setCheckEmail] = React.useState(true);
+    const [checkPassword, setCheckPassword] = React.useState(true);
+    const [checkConfirm, setCheckConfirm] = React.useState(true);
+    const [password, setPassword] = React.useState("");
     const classes = useStyles();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
@@ -76,72 +85,122 @@ export default function SigUp() {
             lastname: data.get("lastname"),
             birthday: birthday,
         };
-        localStorage.removeItem("currentUser");
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        navigate("/");
+        if (
+            birthday &&
+            checkFirstName &&
+            checkLastName &&
+            checkEmail &&
+            checkPassword &&
+            checkConfirm &&
+            password
+        ) {
+            dispatch(signup(currentUser));
+            if (remember) {
+                localStorage.removeItem("currentUser");
+                localStorage.setItem(
+                    "currentUser",
+                    JSON.stringify(currentUser)
+                );
+            }
+            navigate("/");
+        } else {
+            alert("Thông tin tài khoản không hợp lệ, vui lòng thử lại!");
+        }
     };
 
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: "100vh" }}>
-                <CssBaseline />
                 <Grid
                     item
+                    id="sideBanner"
                     className={classes.paperContainer}
-                    xs={false}
                     sm={4}
                     md={7}
                 >
-                    <Box component="div" className={classes.sideBanner}>
-                        <Box component="div" className={classes.brand}>
-                            <Typography
-                                component="h1"
-                                variant="h4"
-                                style={{
-                                    backgroundColor: "transparent",
-                                    color: "#FFF",
-                                    fontFamily: "Arial, Helvetica, sans-serif",
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                Chào mừng tới
-                            </Typography>
-                            <Typography
-                                component="h1"
-                                variant="h4"
-                                className={classes.brandName}
-                            >
-                                Loto Cinemax
-                            </Typography>
-                        </Box>
+                    <Box
+                        xs={false}
+                        component="div"
+                        className={classes.sideBanner}
+                    >
                         <Box
-                            id="test"
+                            xs={false}
                             component="div"
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
+                            className={classes.brandGroup}
                         >
-                            <Typography
-                                component="p"
-                                variant="span"
-                                style={{
-                                    width: "50%",
-                                    backgroundColor: "transparent",
-                                    color: "#FFF",
-                                    fontFamily: "Arial, Helvetica, sans-serif",
-                                    fontSize: "18px",
-                                    fontWeight: "300",
-                                }}
+                            <Grid
+                                container
+                                component="div"
+                                spacing={1}
+                                className={classes.brand}
                             >
-                                Nhiều chương trình khuyến mãi chỉ dành riêng cho
-                                khách hàng Loto Cinemat
-                            </Typography>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={12}
+                                    lg={6}
+                                    className={classes.gridContent}
+                                >
+                                    <Typography
+                                        component="span"
+                                        variant="h4"
+                                        style={{
+                                            backgroundColor: "transparent",
+                                            color: "#FFF",
+                                            fontFamily:
+                                                "Arial, Helvetica, sans-serif",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Chào mừng tới
+                                    </Typography>
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={12}
+                                    lg={6}
+                                    className={classes.gridContent}
+                                >
+                                    <Typography
+                                        component="span"
+                                        variant="h4"
+                                        className={classes.brandName}
+                                    >
+                                        Loto Cinemax
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            <Box
+                                id="test"
+                                component="div"
+                                className={classes.brandIntro}
+                            >
+                                <Typography
+                                    component="p"
+                                    variant="span"
+                                    style={{
+                                        width: "50%",
+                                        backgroundColor: "transparent",
+                                        color: "#FFF",
+                                        fontFamily:
+                                            "Arial, Helvetica, sans-serif",
+                                        fontSize: "18px",
+                                        fontWeight: "300",
+                                    }}
+                                >
+                                    Nhiều chương trình khuyến mãi chỉ dành riêng
+                                    cho khách hàng Loto Cinemat
+                                </Typography>
+                            </Box>
                         </Box>
                     </Box>
                     <Box xs={false} sm={4} md={7} id="box">
-                        <Box component="div" className={classes.sideContact}>
+                        <Box
+                            xs={false}
+                            component="div"
+                            className={classes.sideContact}
+                        >
                             <Typography
                                 component="p"
                                 variant="span"
@@ -179,7 +238,11 @@ export default function SigUp() {
                         }}
                     >
                         <Container>
-                            <Link color="inherit" href="/">
+                            <Link
+                                color="inherit"
+                                href="/"
+                                className={classes.link}
+                            >
                                 <Box component="div" className={classes.brand}>
                                     <img
                                         src={logo}
@@ -187,7 +250,7 @@ export default function SigUp() {
                                         className={classes.logo}
                                     />
                                     <Typography
-                                        component="h1"
+                                        component="h2"
                                         variant="h4"
                                         className={classes.brandName}
                                     >
@@ -205,25 +268,55 @@ export default function SigUp() {
                             onSubmit={handleSubmit}
                             sx={{ mt: 1 }}
                         >
-                            <Box component="div"></Box>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="firstname"
-                                label="First Name"
-                                type="text"
-                                id="first"
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="lastname"
-                                label="Last Name"
-                                type="text"
-                                id="lastname"
-                            />
+                            <Grid container component="div" spacing={2}>
+                                <Grid item component="div" xs={12} md={6}>
+                                    <TextField
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="firstname"
+                                        label="First Name"
+                                        type="text"
+                                        autoFocus
+                                        error={!checkFirstName}
+                                        helperText={
+                                            !checkFirstName
+                                                ? "Không được để trống"
+                                                : " "
+                                        }
+                                        onBlur={(e) =>
+                                            setCheckFirstName(
+                                                Validator.isRequired(
+                                                    e.currentTarget.value
+                                                ).test
+                                            )
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item component="div" xs={12} md={6}>
+                                    <TextField
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="lastname"
+                                        label="Last Name"
+                                        type="text"
+                                        error={!checkLastName}
+                                        helperText={
+                                            !checkLastName
+                                                ? "Không được để trống"
+                                                : " "
+                                        }
+                                        onBlur={(e) =>
+                                            setCheckLastName(
+                                                Validator.isRequired(
+                                                    e.currentTarget.value
+                                                ).test
+                                            )
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
                             <TextField
                                 margin="normal"
                                 required
@@ -231,28 +324,65 @@ export default function SigUp() {
                                 id="email"
                                 label="Email Address"
                                 name="email"
-                                autoComplete="email"
-                                autoFocus
+                                error={!checkEmail}
+                                helperText={
+                                    !checkEmail ? "Nhập vào email hợp lệ" : " "
+                                }
+                                onBlur={(e) =>
+                                    setCheckEmail(
+                                        Validator.isEmail(e.currentTarget.value)
+                                            .test
+                                    )
+                                }
                             />
-                            <FormControl>
-                                <FormLabel id="gender">Gender</FormLabel>
-                                <RadioGroup
-                                    row
-                                    aria-labelledby="gender"
-                                    name="gender"
-                                >
-                                    <FormControlLabel
-                                        value="female"
-                                        control={<Radio />}
-                                        label="Female"
-                                    />
-                                    <FormControlLabel
-                                        value="male"
-                                        control={<Radio />}
-                                        label="Male"
-                                    />
-                                </RadioGroup>
-                            </FormControl>
+                            <Grid
+                                container
+                                component="div"
+                                style={{ marginTop: "20px" }}
+                                spacing={2}
+                            >
+                                <Grid item component="div" xs={7} sm={6}>
+                                    <FormControl>
+                                        <FormLabel id="gender">
+                                            Gender
+                                        </FormLabel>
+                                        <RadioGroup
+                                            row
+                                            aria-labelledby="gender"
+                                            name="gender"
+                                            defaultValue="female"
+                                        >
+                                            <FormControlLabel
+                                                value="female"
+                                                control={<Radio />}
+                                                label="Female"
+                                            />
+                                            <FormControlLabel
+                                                value="male"
+                                                control={<Radio />}
+                                                label="Male"
+                                            />
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item component="div" xs={5} sm={6}>
+                                    <LocalizationProvider
+                                        dateAdapter={AdapterDateFns}
+                                    >
+                                        <DatePicker
+                                            label="Birthday"
+                                            name="birthday"
+                                            value={birthday}
+                                            onChange={(newValue) => {
+                                                setBirthday(newValue);
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} />
+                                            )}
+                                        />
+                                    </LocalizationProvider>
+                                </Grid>
+                            </Grid>
                             <TextField
                                 margin="normal"
                                 required
@@ -261,7 +391,21 @@ export default function SigUp() {
                                 label="Password"
                                 type="password"
                                 id="password"
-                                autoComplete="current-password"
+                                error={!checkPassword}
+                                helperText={
+                                    !checkPassword ? "Nhập đủ 8 ký tự" : " "
+                                }
+                                onBlur={(e) =>
+                                    setCheckPassword(
+                                        Validator.minLength(
+                                            e.currentTarget.value,
+                                            8
+                                        ).test
+                                    )
+                                }
+                                onChange={(e) =>
+                                    setPassword(e.currentTarget.value)
+                                }
                             />
                             <TextField
                                 margin="normal"
@@ -271,38 +415,22 @@ export default function SigUp() {
                                 label="Confirm Password"
                                 type="password"
                                 id="confirmPassword"
-                                autoComplete="current-password"
+                                error={!checkConfirm}
+                                helperText={
+                                    !checkConfirm
+                                        ? "Mật khẩu không chính xác"
+                                        : " "
+                                }
+                                onBlur={(e) =>
+                                    setCheckConfirm(
+                                        Validator.isConfirmed(
+                                            e.currentTarget.value,
+                                            password
+                                        ).test
+                                    )
+                                }
                             />
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    label="Basic example"
-                                    name="birthday"
-                                    value={birthday}
-                                    onChange={(newValue) => {
-                                        setBirthday(newValue);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField {...params} />
-                                    )}
-                                />
-                            </LocalizationProvider>
 
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link
-                                        href="#"
-                                        variant="body2"
-                                        style={{ float: "left" }}
-                                    >
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="/register" variant="body2">
-                                        {"Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
                             <FormControlLabel
                                 control={
                                     <Checkbox

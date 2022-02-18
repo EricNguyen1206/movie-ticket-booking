@@ -7,14 +7,13 @@ const useStyles = makeStyles((theme) => ({
         color: (props) => props.color,
     },
     sideBanner: {
-        marginTop: "300px",
+        height: "calc(100% - 40px) !important",
     },
     sideContact: {
         position: "relative",
         bottom: "0",
         width: "100%",
         height: "40px",
-        margin: "290px 38px 0",
         borderTop: "2px solid #FFF",
     },
     paperContainer: {
@@ -22,22 +21,50 @@ const useStyles = makeStyles((theme) => ({
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        ["@media (max-width:780px)"]: {
+            // eslint-disable-line no-useless-computed-key
+            display: "none !important",
+        },
+        ["@media (min-width:780px)"]: {
+            // eslint-disable-line no-useless-computed-key
+            display: "block !important",
+        },
     },
     logo: {
         width: "60px",
         height: "60px",
+    },
+    brandGroup: {
+        position: "relative",
+        top: "200px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
     },
     brandName: {
         backgroundColor: "transparent",
         color: "#DF2525",
         fontFamily: "Arial, Helvetica, sans-serif !important",
         fontWeight: "bold !important",
-        marginLeft: "8px !important",
+        // marginLeft: "8px !important",
     },
     brand: {
+        maxWidth: "520px !important",
+        margin: "0",
+        ["@media (max-width:900px)"]: {
+            // eslint-disable-line no-useless-computed-key
+            display: "none !important",
+        },
+    },
+    brandIntro: {
         display: "flex",
         justifyContent: "center",
-        alignItems: "flex-end",
+        alignItems: "center",
+        ["@media (max-width:900px)"]: {
+            // eslint-disable-line no-useless-computed-key
+            display: "none !important",
+        },
     },
     loginBtn: {
         backgroundColor: "#DF2525 !important",
@@ -64,6 +91,13 @@ const useStyles = makeStyles((theme) => ({
         width: "40px !important",
         height: "40px !important",
         borderRadius: "50% !important",
+    },
+    link: {
+        textDecoration: "none !important",
+    },
+    gridContent: {
+        display: "flex",
+        justifyContent: "center",
     },
 }));
 

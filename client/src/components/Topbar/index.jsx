@@ -10,14 +10,13 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
-import Avatar from "@mui/material/Avatar";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../../theme";
 import { Link } from "react-router-dom";
 import useStyles from "./style";
 import Logo from "../Logo";
 import { useSelector, useDispatch } from "react-redux";
-import { signout } from "../../app/actions/AuthAction/index";
+import { signout } from "../../app/actions/Auth/index";
 
 const pages = [
     {

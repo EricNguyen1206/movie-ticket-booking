@@ -8,4 +8,9 @@ const signin = (user) => ({
     payload: user,
 });
 
-export { signin, signout };
+const signup = (user) => ({
+    type: "SIGNUP",
+    payload: user,
+});
+
+export { signin, signout, signup };

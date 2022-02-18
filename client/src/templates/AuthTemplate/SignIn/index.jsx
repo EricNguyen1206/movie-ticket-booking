@@ -22,8 +22,9 @@ import {
 import logo from "../../../assets/images/logo.png";
 import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import { signin } from "../../../app/actions/AuthAction";
+import { signin } from "../../../app/actions/Auth";
 import { useNavigate } from "react-router-dom";
+import Validator from "../Validator";
 
 function Copyright(props) {
     return (
@@ -46,6 +47,9 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SigIn() {
+    const [checkEmail, setCheckEmail] = React.useState(true);
+    const [checkPassword, setCheckPassword] = React.useState(true);
+
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -54,17 +58,20 @@ export default function SigIn() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
         const user = {
             email: data.get("email"),
             password: data.get("password"),
         };
         const account = AccountList.find((acc) => acc.email === user.email);
-        if (account && account.password === user.password) {
-            dispatch(signin(account));
-            navigate("/");
+        if (checkPassword && checkEmail) {
+            if (account && account.password === user.password) {
+                dispatch(signin(account));
+                navigate("/");
+            } else {
+                alert("Lỗi, tài khoản không hợp lệ!");
+            }
         } else {
-            alert("Error, incorrect email or password!");
+            alert("Lỗi, vui lòng nhập thông tin chính xác!");
         }
     };
 
@@ -80,51 +87,72 @@ export default function SigIn() {
                     md={7}
                 >
                     <Box component="div" className={classes.sideBanner}>
-                        <Box component="div" className={classes.brand}>
-                            <Typography
-                                component="h1"
-                                variant="h4"
-                                style={{
-                                    backgroundColor: "transparent",
-                                    color: "#FFF",
-                                    fontFamily: "Arial, Helvetica, sans-serif",
-                                    fontWeight: "bold",
-                                }}
+                        <Box component="div" className={classes.brandGroup}>
+                            <Grid
+                                container
+                                component="div"
+                                spacing={1}
+                                className={classes.brand}
                             >
-                                Chào mừng tới
-                            </Typography>
-                            <Typography
-                                component="h1"
-                                variant="h4"
-                                className={classes.brandName}
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={12}
+                                    lg={6}
+                                    className={classes.gridContent}
+                                >
+                                    <Typography
+                                        component="span"
+                                        variant="h4"
+                                        style={{
+                                            backgroundColor: "transparent",
+                                            color: "#FFF",
+                                            fontFamily:
+                                                "Arial, Helvetica, sans-serif",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Chào mừng tới
+                                    </Typography>
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={12}
+                                    lg={6}
+                                    className={classes.gridContent}
+                                >
+                                    <Typography
+                                        component="span"
+                                        variant="h4"
+                                        className={classes.brandName}
+                                    >
+                                        Loto Cinemax
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            <Box
+                                id="test"
+                                component="div"
+                                className={classes.brandIntro}
                             >
-                                Loto Cinemax
-                            </Typography>
-                        </Box>
-                        <Box
-                            id="test"
-                            component="div"
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Typography
-                                component="p"
-                                variant="span"
-                                style={{
-                                    width: "50%",
-                                    backgroundColor: "transparent",
-                                    color: "#FFF",
-                                    fontFamily: "Arial, Helvetica, sans-serif",
-                                    fontSize: "18px",
-                                    fontWeight: "300",
-                                }}
-                            >
-                                Nhiều chương trình khuyến mãi chỉ dành riêng cho
-                                khách hàng Loto Cinemat
-                            </Typography>
+                                <Typography
+                                    component="p"
+                                    variant="span"
+                                    style={{
+                                        width: "50%",
+                                        backgroundColor: "transparent",
+                                        color: "#FFF",
+                                        fontFamily:
+                                            "Arial, Helvetica, sans-serif",
+                                        fontSize: "18px",
+                                        fontWeight: "300",
+                                    }}
+                                >
+                                    Nhiều chương trình khuyến mãi chỉ dành riêng
+                                    cho khách hàng Loto Cinemat
+                                </Typography>
+                            </Box>
                         </Box>
                     </Box>
                     <Box xs={false} sm={4} md={7} id="box">
@@ -166,7 +194,11 @@ export default function SigIn() {
                         }}
                     >
                         <Container>
-                            <Link color="inherit" href="/">
+                            <Link
+                                color="inherit"
+                                href="/"
+                                className={classes.link}
+                            >
                                 <Box component="div" className={classes.brand}>
                                     <img
                                         src={logo}
@@ -201,6 +233,16 @@ export default function SigIn() {
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
+                                error={!checkEmail}
+                                helperText={
+                                    !checkEmail ? "Email không hợp lệ" : " "
+                                }
+                                onBlur={(e) =>
+                                    setCheckEmail(
+                                        Validator.isEmail(e.currentTarget.value)
+                                            .test
+                                    )
+                                }
                             />
                             <TextField
                                 margin="normal"
@@ -211,6 +253,18 @@ export default function SigIn() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                error={!checkPassword}
+                                helperText={
+                                    !checkPassword ? "Nhập đủ 8 ký tự" : " "
+                                }
+                                onBlur={(e) =>
+                                    setCheckPassword(
+                                        Validator.minLength(
+                                            e.currentTarget.value,
+                                            8
+                                        ).test
+                                    )
+                                }
                             />
                             <Grid container>
                                 <Grid item xs>
@@ -223,7 +277,7 @@ export default function SigIn() {
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="/register" variant="body2">
+                                    <Link href="/signup" variant="body2">
                                         {"Sign Up"}
                                     </Link>
                                 </Grid>
