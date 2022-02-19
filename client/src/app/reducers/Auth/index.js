@@ -1,4 +1,5 @@
-const currentUserInit = {
+import { createSlice } from "@reduxjs/toolkit";
+const userInit = {
     firstName: "John",
     lastName: "Doe",
     gender: "male",
@@ -6,7 +7,7 @@ const currentUserInit = {
     password: "123123123",
 };
 
-const currentUser = (state = currentUserInit, { type, payload }) => {
+const user = (state = userInit, { type, payload }) => {
     switch (type) {
         case "SIGNIN":
             state = payload;
@@ -19,7 +20,7 @@ const currentUser = (state = currentUserInit, { type, payload }) => {
     }
 };
 
-const accountListInit = [
+const accountsInit = [
     {
         firstName: "John",
         lastName: "Doe",
@@ -50,7 +51,7 @@ const accountListInit = [
     },
 ];
 
-const AccountList = (state = accountListInit, { type, payload }) => {
+const accounts = (state = accountsInit, { type, payload }) => {
     switch (type) {
         case "GET_ACCOUT_LIST":
             return [...state];
@@ -61,4 +62,10 @@ const AccountList = (state = accountListInit, { type, payload }) => {
     }
 };
 
-export { currentUser, AccountList };
+export const authSlice = createSlice({
+    name: "auth",
+    initialState: {},
+    reducer: {},
+});
+
+export { user, accounts };

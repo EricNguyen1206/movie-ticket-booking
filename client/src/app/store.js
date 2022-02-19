@@ -1,12 +1,15 @@
-import { combineReducers, createStore } from "redux";
-import currentUser from "./reducers/curentUser";
-import AccountList from "./reducers/AccountList";
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./reducers/Auth/userSlice";
 
-const rootReducer = combineReducers({
-    AccountList,
-    currentUser,
+export default configureStore({
+    reducer: {
+        user: userReducer,
+        // banners: banners,
+        // moviesUser: movies,
+        // movieDetails: movieDetails,
+        // moviesAdmin: moviesAdmin,
+        // tickets: tickets,
+        // cinemas: cinemas,
+        // movieSchedules: movieSchedules,
+    },
 });
-
-const store = createStore(rootReducer);
-
-export default store;

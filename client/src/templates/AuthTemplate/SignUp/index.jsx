@@ -28,8 +28,10 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import logo from "../../../assets/images/logo.png";
 import useStyles from "./styles";
 import Validator from "../Validator";
-import { useDispatch } from "react-redux";
-import { signup } from "../../../app/actions/Auth";
+import { useDispatch, useSelector } from "react-redux";
+// import { signup } from "../../../app/actions/Auth";
+import { userRegister } from "../../../app/reducers/Auth/userSlice";
+import { LoadingButton } from "@mui/lab";
 
 function Copyright(props) {
     return (
@@ -63,6 +65,7 @@ export default function SigUp() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { isLoading } = useSelector((state) => state.user);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -80,9 +83,9 @@ export default function SigUp() {
         const currentUser = {
             email: data.get("email"),
             password: data.get("password"),
+            firstName: data.get("firstname"),
+            lastName: data.get("lastname"),
             gender: data.get("gender"),
-            firstname: data.get("firstname"),
-            lastname: data.get("lastname"),
             birthday: birthday,
         };
         if (
@@ -94,7 +97,7 @@ export default function SigUp() {
             checkConfirm &&
             password
         ) {
-            dispatch(signup(currentUser));
+            dispatch(userRegister(currentUser));
             if (remember) {
                 localStorage.removeItem("currentUser");
                 localStorage.setItem(
@@ -102,7 +105,7 @@ export default function SigUp() {
                     JSON.stringify(currentUser)
                 );
             }
-            navigate("/");
+            // navigate("/");
         } else {
             alert("Thông tin tài khoản không hợp lệ, vui lòng thử lại!");
         }
@@ -448,15 +451,26 @@ export default function SigUp() {
                                     justifyContent: "center",
                                 }}
                             >
-                                <Button
+                                {/* {isLoading ? ( */}
+                                <LoadingButton
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
                                     className={classes.loginBtn}
-                                >
-                                    Xác nhận
-                                </Button>
+                                    loading={isLoading}
+                                ></LoadingButton>
+                                {/* ) : (
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                        className={classes.loginBtn}
+                                    >
+                                        Xác nhận
+                                    </Button>
+                                )} */}
                             </Box>
                             <Box
                                 component="div"
