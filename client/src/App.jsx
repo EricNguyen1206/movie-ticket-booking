@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeTemplate from "./templates/HomeTemplate";
 import PageNotFound from "./templates/PageNotFound";
-// import { routeHome, routeAuth } from "./Routes/";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import { routeHome, routeAuth, routeAdmin } from "./Routes";
 import React, { Suspense } from "react";
 import "./App.css";
@@ -54,6 +55,7 @@ function App() {
 
     return (
         <div className="App">
+            <ToastContainer />
             <BrowserRouter>
                 <Suspense fallback={<div>Loading...</div>}>
                     <Routes>

@@ -35,11 +35,8 @@ const pages = [
 
 const Topbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const currentUser = useSelector((state) => state.currentUser);
     const classes = useStyles();
     const dispatch = useDispatch();
-
-    console.log("topbar", currentUser);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -47,11 +44,6 @@ const Topbar = () => {
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
-    };
-
-    const handleSignout = () => {
-        console.log(currentUser);
-        dispatch(signout());
     };
 
     return (
@@ -150,7 +142,7 @@ const Topbar = () => {
                         </Box>
 
                         <Box sx={{ flexGrow: 0, display: "flex" }}>
-                            {currentUser.email ? (
+                            {/* {.email ? (
                                 <Button
                                     className={classes.btnLink}
                                     onClick={() => handleSignout()}
@@ -158,20 +150,20 @@ const Topbar = () => {
                                     Đăng xuất
                                 </Button>
                             ) : (
-                                <>
-                                    <Link to="/signin" className={classes.link}>
-                                        <Button className={classes.btnLink}>
-                                            Đăng nhập
-                                        </Button>
-                                    </Link>
-                                    <Divider orientation="vertical" flexItem />
-                                    <Link to="/signup" className={classes.link}>
-                                        <Button className={classes.btnLink}>
-                                            Đăng ký
-                                        </Button>
-                                    </Link>
-                                </>
-                            )}
+                                <> */}
+                            <Link to="/signin" className={classes.link}>
+                                <Button className={classes.btnLink}>
+                                    Đăng nhập
+                                </Button>
+                            </Link>
+                            <Divider orientation="vertical" flexItem />
+                            <Link to="/signup" className={classes.link}>
+                                <Button className={classes.btnLink}>
+                                    Đăng ký
+                                </Button>
+                            </Link>
+                            {/* </>
+                            )} */}
                         </Box>
                     </Toolbar>
                 </Container>
