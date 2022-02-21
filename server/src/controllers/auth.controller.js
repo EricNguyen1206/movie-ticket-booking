@@ -5,7 +5,6 @@ let signUp = async (req, res) => {
     try {
         let { firstName, lastName, email, password, gender, birthday } =
             req.body;
-        console.log(req.body);
         if (
             !firstName ||
             !lastName ||
@@ -21,7 +20,6 @@ let signUp = async (req, res) => {
         }
 
         let response = await authService.signUp(req.body);
-
         return res.status(200).json(response);
     } catch (err) {
         return res
@@ -34,13 +32,14 @@ let signIn = async (req, res) => {
     try {
         let { email, password } = req.body;
         if (!email || !password) {
+            console.log("success1");
             return res
                 .status(200)
                 .json({ success: false, message: transErrorsVi.signin_failed });
         }
 
         let response = await authService.signIn(email, password);
-
+        console.log("success2");
         return res.status(200).json(response);
     } catch (err) {
         console.log("err", err);
@@ -55,21 +54,17 @@ let verifyAccount = async (req, res) => {
     try {
         let { token, email } = req.body;
         if (!email) {
-            return res
-                .status(200)
-                .json({
-                    success: false,
-                    message: transErrorsVi.email_not_found,
-                });
+            return res.status(200).json({
+                success: false,
+                message: transErrorsVi.email_not_found,
+            });
         }
 
         if (!token) {
-            return res
-                .status(200)
-                .json({
-                    success: false,
-                    message: transErrorsVi.token_undefined,
-                });
+            return res.status(200).json({
+                success: false,
+                message: transErrorsVi.token_undefined,
+            });
         }
         let response = await authService.verifyAccount(token, email);
 
