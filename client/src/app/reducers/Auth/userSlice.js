@@ -20,9 +20,7 @@ export const userRegister = createAsyncThunk(
         const response = await axios.post("/api/sign-up", userInfo);
         // const { token } = response.data;
         // setSession(token);
-        console.log("Yo,", userInfo);
-        console.log(response.data);
-        dispatch(REGISTER(response.data));
+        return response.data;
     }
 );
 
@@ -31,7 +29,6 @@ const userSlice = createSlice({
     initialState,
     reducer: {
         REGISTER: (state, action) => {
-            console.log("REGISTER", action);
             state.user = action.payload.user;
             state.isAuthenticated = true;
         },
@@ -41,16 +38,14 @@ const userSlice = createSlice({
             state.status = "PENDING";
             state.isLoading = true;
         },
-        [userRegister.fulfilled]: (state) => {
+        [userRegister.fulfilled]: (state, action) => {
             state.status = "SUCCESS";
             state.isLoading = false;
-            console.log("Yo welcome to the club");
-            toast.success("Yo welcome to the club");
+            toast.success("User registration successful!");
         },
         [userRegister.rejected]: (state, action) => {
             state.status = "FAILED";
             state.isLoading = false;
-            console.log("User registration rejected", action);
             toast.error(
                 action.error.message.startsWith("E11000")
                     ? `${action.error.message.slice(

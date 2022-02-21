@@ -105,7 +105,7 @@ export default function SigUp() {
                     JSON.stringify(currentUser)
                 );
             }
-            // navigate("/");
+            navigate("/");
         } else {
             alert("Thông tin tài khoản không hợp lệ, vui lòng thử lại!");
         }
