@@ -19,9 +19,9 @@ connectDB();
 initRoutes(app);
 
 app.use((req, res) => {
-    return res.status(404).json({ message: "Unauthorized" });
+  return res.status(404).json({ message: "Unauthorized" });
 });
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });
