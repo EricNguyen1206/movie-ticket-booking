@@ -16,27 +16,15 @@ import { Link } from "react-router-dom";
 import useStyles from "./style";
 import Logo from "../Logo";
 import { useSelector, useDispatch } from "react-redux";
-import { signout } from "../../app/actions/Auth/index";
-
-const pages = [
-    {
-        title: "PHIM",
-        path: "movies",
-    },
-    {
-        title: "CỤM RẠP",
-        path: "cineplex",
-    },
-    {
-        title: "LIÊN HỆ",
-        path: "contact",
-    },
-];
+import { userSignout } from "../../app/reducers/Auth/userSlice";
 
 const Topbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const classes = useStyles();
     const dispatch = useDispatch();
+    const { isAuthenticated } = useSelector((state) => state.user);
+    const { account } = useSelector((state) => state.user);
+    const { status } = useSelector((state) => state.user);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -46,8 +34,13 @@ const Topbar = () => {
         setAnchorElNav(null);
     };
 
+    const handleSignout = () => {
+        dispatch(userSignout());
+    };
+
     return (
         <ThemeProvider theme={theme}>
+            {console.log("account: " + account)}
             <AppBar id="appbar" className={classes.root}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
@@ -98,21 +91,33 @@ const Topbar = () => {
                                     display: { xs: "block", md: "none" },
                                 }}
                             >
-                                {pages.map((page) => (
-                                    <MenuItem
-                                        key={page.title}
-                                        onClick={handleCloseNavMenu}
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Link to="#movies" className={classes.link}>
+                                        <Button className={classes.navLink}>
+                                            PHIM
+                                        </Button>
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Link
+                                        to="#cineplex"
+                                        className={classes.link}
                                     >
-                                        <Link
-                                            to={`#${page.path}`}
-                                            className={classes.link}
-                                        >
-                                            <Button className={classes.navLink}>
-                                                {page.title}
-                                            </Button>
-                                        </Link>
-                                    </MenuItem>
-                                ))}
+                                        <Button className={classes.navLink}>
+                                            CỤM RẠP
+                                        </Button>
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Link
+                                        to="#contact"
+                                        className={classes.link}
+                                    >
+                                        <Button className={classes.navLink}>
+                                            LIÊN HỆ
+                                        </Button>
+                                    </Link>
+                                </MenuItem>
                             </Menu>
                         </Box>
                         <Box
@@ -122,10 +127,55 @@ const Topbar = () => {
                                 justifyContent: "center",
                             }}
                         >
-                            {pages.map((page) => (
+                            <Link
+                                key="PHIM"
+                                to="movies"
+                                className={classes.link}
+                            >
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    sx={{
+                                        my: 2,
+                                    }}
+                                    className={classes.navLink}
+                                >
+                                    PHIM
+                                </Button>
+                            </Link>
+                            <Link
+                                key="CỤM RẠP"
+                                to="cineplex"
+                                className={classes.link}
+                            >
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    sx={{
+                                        my: 2,
+                                    }}
+                                    className={classes.navLink}
+                                >
+                                    CỤM RẠP
+                                </Button>
+                            </Link>
+                            <Link
+                                key="LIÊN HỆ"
+                                to="#contact"
+                                className={classes.link}
+                            >
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    sx={{
+                                        my: 2,
+                                    }}
+                                    className={classes.navLink}
+                                >
+                                    LIÊN HỆ
+                                </Button>
+                            </Link>
+                            {account.role === "R1" ? (
                                 <Link
-                                    key={page.title}
-                                    to={`#${page.path}`}
+                                    key="LIÊN HỆ"
+                                    to="/admin"
                                     className={classes.link}
                                 >
                                     <Button
@@ -135,14 +185,16 @@ const Topbar = () => {
                                         }}
                                         className={classes.navLink}
                                     >
-                                        {page.title}
+                                        QUẢN LÝ
                                     </Button>
                                 </Link>
-                            ))}
+                            ) : (
+                                ""
+                            )}
                         </Box>
 
                         <Box sx={{ flexGrow: 0, display: "flex" }}>
-                            {/* {.email ? (
+                            {status && status === "SUCCESS" ? (
                                 <Button
                                     className={classes.btnLink}
                                     onClick={() => handleSignout()}
@@ -150,20 +202,20 @@ const Topbar = () => {
                                     Đăng xuất
                                 </Button>
                             ) : (
-                                <> */}
-                            <Link to="/signin" className={classes.link}>
-                                <Button className={classes.btnLink}>
-                                    Đăng nhập
-                                </Button>
-                            </Link>
-                            <Divider orientation="vertical" flexItem />
-                            <Link to="/signup" className={classes.link}>
-                                <Button className={classes.btnLink}>
-                                    Đăng ký
-                                </Button>
-                            </Link>
-                            {/* </>
-                            )} */}
+                                <>
+                                    <Link to="/signin" className={classes.link}>
+                                        <Button className={classes.btnLink}>
+                                            Đăng nhập
+                                        </Button>
+                                    </Link>
+                                    <Divider orientation="vertical" flexItem />
+                                    <Link to="/signup" className={classes.link}>
+                                        <Button className={classes.btnLink}>
+                                            Đăng ký
+                                        </Button>
+                                    </Link>
+                                </>
+                            )}
                         </Box>
                     </Toolbar>
                 </Container>

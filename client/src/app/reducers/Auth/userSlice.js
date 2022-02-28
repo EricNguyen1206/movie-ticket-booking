@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 const initialState = {
     user: {},
+    account: {},
     isAuthenticated: false,
     isInitialized: false,
     status: null,
@@ -18,19 +19,39 @@ export const userRegister = createAsyncThunk(
     "user/register",
     async (userInfo, { dispatch }) => {
         const response = await axios.post("/api/sign-up", userInfo);
+
         // const { token } = response.data;
         // setSession(token);
         return response.data;
     }
 );
 
+export const userSignIn = createAsyncThunk(
+    "user/sign-in",
+    async (account, { dispatch }) => {
+        const response = await axios.post("/api/sign-in", {
+            email: account.email,
+            password: account.password,
+        });
+        return response.data;
+    }
+);
+
+export const userVerify = createAsyncThunk("user/verify", async (account) => {
+    const response = await axios.post("/api/verify-account", {
+        token: account.token,
+        email: account.email,
+    });
+    return response.data;
+});
+
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducer: {
-        REGISTER: (state, action) => {
-            state.user = action.payload.user;
-            state.isAuthenticated = true;
+    reducers: {
+        userSignout: (state) => {
+            state.isAuthenticated = false;
+            state.status = "FAILED";
         },
     },
     extraReducers: {
@@ -41,7 +62,9 @@ const userSlice = createSlice({
         [userRegister.fulfilled]: (state, action) => {
             state.status = "SUCCESS";
             state.isLoading = false;
-            toast.success("User registration successful!");
+            toast.success(action.payload.message);
+            state.user = action.newUser;
+            state.account = action.newAccount;
         },
         [userRegister.rejected]: (state, action) => {
             state.status = "FAILED";
@@ -55,19 +78,41 @@ const userSlice = createSlice({
                     : "User registration rejected"
             );
         },
+        [userSignIn.pending]: (state) => {
+            state.status = "PENDING";
+            state.isLoading = true;
+        },
+        [userSignIn.fulfilled]: (state, action) => {
+            state.status = "SUCCESS";
+            state.isLoading = false;
+            state.hasError = false;
+            toast.success(action.payload.message);
+        },
+        [userSignIn.rejected]: (state, action) => {
+            state.status = "FAILED";
+            state.isLoading = false;
+            state.hasError = true;
+            toast.error("User signin rejected");
+        },
+        [userVerify.pending]: (state) => {
+            state.status = "PENDING";
+            state.isLoading = true;
+        },
+        [userVerify.fulfilled]: (state, action) => {
+            console.log(action);
+            state.status = "SUCCESS";
+            state.isLoading = false;
+            state.isAuthenticated = true;
+            toast.success(action.payload.message);
+        },
+        [userVerify.rejected]: (state, action) => {
+            state.status = "FAILED";
+            state.isLoading = false;
+            toast.error("User verify rejected");
+        },
     },
 });
 
-export const {
-    INITIALIZE,
-    REGISTER,
-    LOGIN,
-    LOGOUT,
-    UPDATE,
-    PENDING,
-    SUCCESS,
-    REJECT,
-    STATUS,
-} = userSlice.actions;
+export const { userSignout } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
     Box,
-    Button,
     Checkbox,
     Container,
     CssBaseline,
@@ -22,9 +21,10 @@ import {
 import logo from "../../../assets/images/logo.png";
 import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import { signin } from "../../../app/actions/Auth";
 import { useNavigate } from "react-router-dom";
 import Validator from "../Validator";
+import { userSignIn } from "../../../app/reducers/Auth/userSlice";
+import { LoadingButton } from "@mui/lab";
 
 function Copyright(props) {
     return (
@@ -49,27 +49,40 @@ const theme = createTheme();
 export default function SigIn() {
     const [checkEmail, setCheckEmail] = React.useState(true);
     const [checkPassword, setCheckPassword] = React.useState(true);
-
+    const [remember, setRemember] = React.useState(false);
+    const { isLoading } = useSelector((state) => state.user);
+    const { status } = useSelector((state) => state.user);
+    const { isAuthenticated } = useSelector((state) => state.user);
+    const { account } = useSelector((state) => state.user);
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const AccountList = useSelector((state) => state.AccountList);
+
+    React.useEffect(() => {
+        if (status === "SUCCESS") {
+            if (isAuthenticated) {
+                alert("You are not authenticated");
+            } else {
+                if (remember) {
+                    console.log(account);
+                    localStorage.setItem("account", { ...account });
+                }
+                navigate("/");
+            }
+        } else if (status === "FAILED") {
+            alert("Login failed");
+        }
+    }, [status]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const user = {
+        const account = {
             email: data.get("email"),
             password: data.get("password"),
         };
-        const account = AccountList.find((acc) => acc.email === user.email);
         if (checkPassword && checkEmail) {
-            if (account && account.password === user.password) {
-                dispatch(signin(account));
-                navigate("/");
-            } else {
-                alert("Lỗi, tài khoản không hợp lệ!");
-            }
+            dispatch(userSignIn(account));
         } else {
             alert("Lỗi, vui lòng nhập thông tin chính xác!");
         }
@@ -285,8 +298,9 @@ export default function SigIn() {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        value="remember"
+                                        value={remember}
                                         color="primary"
+                                        onChange={() => setRemember(!remember)}
                                     />
                                 }
                                 label="Remember me"
@@ -298,15 +312,16 @@ export default function SigIn() {
                                     justifyContent: "center",
                                 }}
                             >
-                                <Button
+                                <LoadingButton
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
                                     className={classes.loginBtn}
+                                    loading={isLoading}
                                 >
-                                    Xác nhận
-                                </Button>
+                                    Submit
+                                </LoadingButton>
                             </Box>
                             <Box
                                 component="div"
