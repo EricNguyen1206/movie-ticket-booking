@@ -4,8 +4,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 
 function Copyright() {
     return (
@@ -21,8 +19,7 @@ function Copyright() {
 }
 
 export default function Home() {
-    const currentUser = useSelector((state) => state.currentUser);
-    const dispatch = useDispatch();
+    React.useEffect(() => {}, []);
 
     return (
         <Box
