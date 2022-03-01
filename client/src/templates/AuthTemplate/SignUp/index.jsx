@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
     Box,
-    Button,
     Checkbox,
     Container,
     Grid,
@@ -66,6 +65,7 @@ export default function SigUp() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isLoading } = useSelector((state) => state.user);
+    const { user } = useSelector((state) => state.user);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -105,7 +105,9 @@ export default function SigUp() {
                     JSON.stringify(currentUser)
                 );
             }
-            navigate("/");
+            if (user.email) {
+                navigate("/");
+            }
         } else {
             alert("Thông tin tài khoản không hợp lệ, vui lòng thử lại!");
         }
@@ -451,7 +453,6 @@ export default function SigUp() {
                                     justifyContent: "center",
                                 }}
                             >
-                                {/* {isLoading ? ( */}
                                 <LoadingButton
                                     type="submit"
                                     fullWidth
@@ -459,18 +460,9 @@ export default function SigUp() {
                                     sx={{ mt: 3, mb: 2 }}
                                     className={classes.loginBtn}
                                     loading={isLoading}
-                                ></LoadingButton>
-                                {/* ) : (
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
-                                        className={classes.loginBtn}
-                                    >
-                                        Xác nhận
-                                    </Button>
-                                )} */}
+                                >
+                                    Submit
+                                </LoadingButton>
                             </Box>
                             <Box
                                 component="div"

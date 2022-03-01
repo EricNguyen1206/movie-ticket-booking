@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeTemplate from "./templates/HomeTemplate";
 import PageNotFound from "./templates/PageNotFound";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { routeHome, routeAuth, routeAdmin } from "./Routes";
 import React, { Suspense } from "react";
 import "./App.css";
