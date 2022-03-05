@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -13,10 +13,16 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { mainListItems, secondaryListItems } from "./listItems";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
+import SearchIcon from "@mui/icons-material/Search";
 import Topbar from "./Topbar";
+import useStyles from "./styles";
+import theme from "../../theme";
+import Button from "@mui/material/Button";
+import { InputBase } from "@mui/material";
 
 function Copyright(props) {
     return (
@@ -35,6 +41,24 @@ function Copyright(props) {
         </Typography>
     );
 }
+
+const controlUserButtons = [
+    {
+        id: 1,
+        isActive: true,
+        title: "Tất cả",
+    },
+    {
+        id: 2,
+        isActive: false,
+        title: "Quản lý",
+    },
+    {
+        id: 3,
+        isActive: false,
+        title: "Khách hàng",
+    },
+];
 
 const drawerWidth = 240;
 
@@ -64,20 +88,36 @@ const Drawer = styled(MuiDrawer, {
     },
 }));
 
-const mdTheme = createTheme();
-
 function DashboardContent() {
     const [open, setOpen] = React.useState(true);
+    const [search, setSearch] = React.useState("");
+    const classes = useStyles();
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
+    const handleClickControlUserBtn = (id) => {
+        if (id === 1) {
+            controlUserButtons[0].isActive = true;
+            controlUserButtons[1].isActive = false;
+            controlUserButtons[2].isActive = false;
+        } else if (id === 2) {
+            controlUserButtons[0].isActive = false;
+            controlUserButtons[1].isActive = true;
+            controlUserButtons[2].isActive = false;
+        } else {
+            controlUserButtons[0].isActive = false;
+            controlUserButtons[1].isActive = false;
+            controlUserButtons[2].isActive = true;
+        }
+    };
+
     return (
-        <ThemeProvider theme={mdTheme}>
-            <Box sx={{ display: "flex" }}>
+        <ThemeProvider theme={theme}>
+            <Topbar />
+            <Box sx={{ display: "flex" }} className={classes.root}>
                 <CssBaseline />
-                <Topbar />
-                <Drawer variant="permanent" open={open}>
+                <Drawer variant="permanent" open={open} id="acb">
                     <Toolbar
                         sx={{
                             display: "flex",
@@ -85,6 +125,7 @@ function DashboardContent() {
                             justifyContent: "flex-end",
                             px: [1],
                         }}
+                        id="abb"
                     >
                         <IconButton onClick={toggleDrawer}>
                             <ChevronLeftIcon />
@@ -109,36 +150,75 @@ function DashboardContent() {
                         overflow: "auto",
                     }}
                 >
-                    <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                        <Grid
+                            container
+                            spacing={3}
+                            className={classes.bodyControlBar}
+                        >
+                            <Grid
+                                item
+                                sx={12}
+                                md={8}
+                                className={classes.bodyControlBarItem}
+                            >
+                                {controlUserButtons.map((item) => (
+                                    <Button
+                                        key={item.id}
+                                        className={
+                                            item.isActive
+                                                ? classes.bodyBtnActive
+                                                : classes.bodyBtnDefault
+                                        }
+                                        onClick={() =>
+                                            handleClickControlUserBtn(item.id)
+                                        }
+                                    >
+                                        {item.title}
+                                    </Button>
+                                ))}
+                            </Grid>
+                            <Grid
+                                item
+                                xs={false}
+                                md={4}
+                                className={classes.bodyControlBarItem}
+                            >
+                                <Box component="div">
+                                    <Paper
+                                        component="form"
+                                        sx={{
+                                            p: "2px 4px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            width: "100%",
+                                        }}
+                                    >
+                                        <InputBase
+                                            sx={{ ml: 1, flex: 1 }}
+                                            placeholder="Search..."
+                                            inputProps={{
+                                                "aria-label":
+                                                    "search google maps",
+                                            }}
+                                            value={search}
+                                        />
+                                        <IconButton
+                                            type="submit"
+                                            sx={{ p: "10px" }}
+                                            aria-label="search"
+                                        >
+                                            <SearchIcon
+                                                className={
+                                                    classes.bodyControlBarSearchIcon
+                                                }
+                                            />
+                                        </IconButton>
+                                    </Paper>
+                                </Box>
+                            </Grid>
+                        </Grid>
                         <Grid container spacing={3}>
-                            {/* Chart */}
-                            <Grid item xs={12} md={8} lg={9}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        height: 240,
-                                    }}
-                                >
-                                    {/* <Chart /> */}
-                                </Paper>
-                            </Grid>
-                            {/* Recent Deposits */}
-                            <Grid item xs={12} md={4} lg={3}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        height: 240,
-                                    }}
-                                >
-                                    <Deposits />
-                                </Paper>
-                            </Grid>
-                            {/* Recent Orders */}
                             <Grid item xs={12}>
                                 <Paper
                                     sx={{
@@ -151,7 +231,32 @@ function DashboardContent() {
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <Copyright sx={{ pt: 4 }} />
+                        <Box
+                            component="div"
+                            className={classes.footerPagination}
+                        >
+                            <button className={classes.footerPaginationItem}>
+                                <ChevronLeftIcon />
+                            </button>
+                            <button
+                                className={classes.footerPaginationItemActive}
+                            >
+                                1
+                            </button>
+                            <button className={classes.footerPaginationItem}>
+                                2
+                            </button>
+                            <button className={classes.footerPaginationItem}>
+                                3
+                            </button>
+                            <span>...</span>
+                            <button className={classes.footerPaginationItem}>
+                                22
+                            </button>
+                            <button className={classes.footerPaginationItem}>
+                                <ChevronRightIcon />
+                            </button>
+                        </Box>
                     </Container>
                 </Box>
             </Box>

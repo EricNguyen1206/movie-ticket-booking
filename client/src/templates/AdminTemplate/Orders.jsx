@@ -6,6 +6,11 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
+import Button from "@mui/material/Button";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import BlockIcon from "@mui/icons-material/Block";
+import useStyles from "./styles";
+import { useDispatch, useSelector } from "react-redux";
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -60,17 +65,22 @@ function preventDefault(event) {
 }
 
 export default function Orders() {
+    const classes = useStyles();
+    const dispatch = useDispatch();
+
     return (
         <React.Fragment>
             <Title>Recent Orders</Title>
             <Table size="small">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Ship To</TableCell>
-                        <TableCell>Payment Method</TableCell>
-                        <TableCell align="right">Sale Amount</TableCell>
+                        <TableCell>Tài khoản</TableCell>
+                        <TableCell>Họ tên</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>SDT</TableCell>
+                        <TableCell>Mật khẩu</TableCell>
+                        <TableCell>Quyền</TableCell>
+                        <TableCell align="right">Chức năng</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -80,19 +90,22 @@ export default function Orders() {
                             <TableCell>{row.name}</TableCell>
                             <TableCell>{row.shipTo}</TableCell>
                             <TableCell>{row.paymentMethod}</TableCell>
-                            <TableCell align="right">{`$${row.amount}`}</TableCell>
+                            <TableCell>{row.paymentMethod}</TableCell>
+                            <TableCell>{row.paymentMethod}</TableCell>
+                            <TableCell align="right">
+                                <Button className={classes.bodyTableBtn}>
+                                    <BorderColorIcon
+                                        style={{ color: "green" }}
+                                    />
+                                </Button>
+                                <Button className={classes.bodyTableBtn}>
+                                    <BlockIcon style={{ color: "red" }} />
+                                </Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            <Link
-                color="primary"
-                href="#"
-                onClick={preventDefault}
-                sx={{ mt: 3 }}
-            >
-                See more orders
-            </Link>
         </React.Fragment>
     );
 }

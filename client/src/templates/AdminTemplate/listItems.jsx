@@ -7,66 +7,68 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import Typography from "@mui/material/Typography";
 import LayersIcon from "@mui/icons-material/Layers";
+import Box from "@mui/material/Box";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../../theme";
+import Avatar from "@mui/material/Avatar";
+import avatatpath from "../../assets/avatars/avatar-default.jpg";
 
 export const mainListItems = (
     <React.Fragment>
         <ListItemButton>
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <ShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Orders" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Customers" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Reports" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <LayersIcon />
-            </ListItemIcon>
-            <ListItemText primary="Integrations" />
+            <Box
+                component="div"
+                sx={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <Avatar
+                    alt="Remy Sharp"
+                    src={avatatpath}
+                    sx={{
+                        width: 40,
+                        height: 40,
+                    }}
+                />
+                <Typography variant="h8" component="span">
+                    Nguyen van A
+                </Typography>
+                <Typography variant="h10" component="span">
+                    nguyenvana@gmail.com
+                </Typography>
+                {/* <ListItemButton>
+                    <ListItemIcon>
+                    </ListItemIcon>
+                    {/* <ListItemText>
+                        
+                    </ListItemText>
+                    <ListItemText primary="Quản lý người dùng" />
+                </ListItemButton> */}
+            </Box>
         </ListItemButton>
     </React.Fragment>
 );
 
 export const secondaryListItems = (
     <React.Fragment>
-        <ListSubheader component="div" inset>
-            Saved reports
-        </ListSubheader>
         <ListItemButton>
             <ListItemIcon>
-                <AssignmentIcon />
+                <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Current month" />
+            <ListItemText primary="Quản lý người dùng" />
         </ListItemButton>
         <ListItemButton>
             <ListItemIcon>
-                <AssignmentIcon />
+                <BarChartIcon />
             </ListItemIcon>
-            <ListItemText primary="Last quarter" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Year-end sale" />
+            <ListItemText primary="Quản lý phim" />
         </ListItemButton>
     </React.Fragment>
 );
