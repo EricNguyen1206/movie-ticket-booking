@@ -2,6 +2,7 @@ const authService = require("../services/auth.service");
 const { transErrorsVi } = require("../../lang/vi");
 
 let signUp = async (req, res) => {
+    console.log(res.headers);
     try {
         let { firstName, lastName, email, password, gender, birthday } =
             req.body;
