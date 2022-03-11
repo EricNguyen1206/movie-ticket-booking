@@ -14,17 +14,49 @@ const useStyles = makeStyles((theme) => ({
             color: "white",
         },
     },
+    controlSearchBox: {
+        marginRight: 0,
+    },
     topbar: {
+        position: "fixed !important",
+        top: 0,
+        left: 0,
+        width: "100%",
         backgroundImage: `url(${bg})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        zIndex: 1,
     },
-    bodyControlBar: {
-        display: "flex !important",
-        alignItems: "center !important",
-        backgroundColor: "white !important",
-        margin: "80px 0 20px 0 !important",
+    topbarLink: {
+        width: "50px !important",
+        height: "50px !important",
+        textDecoration: "none",
+    },
+    sidebar: {
+        position: "fixed !important",
+        top: "64px",
+        left: 0,
+        width: "255px",
+        height: "calc(100vh - 64px) !important",
+        backgroundColor: theme.palette
+            ? theme.palette.secondary.dark
+            : "#1b1b1b",
+    },
+    sidebarItem: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "16px",
+    },
+    sidebarActive: {
+        backgroundColor:
+            (theme.palette ? theme.palette.primary.main : "#DF2525") +
+            "!important",
+    },
+    body: {
+        position: "relative !important",
     },
     bodyBtnActive: {
         marginLeft: "20px !important",
@@ -38,8 +70,18 @@ const useStyles = makeStyles((theme) => ({
         color: "white !important",
         fontWeight: "bold !important",
     },
+    bodyControlBar: {
+        width: "100% !important",
+        height: "72px !important",
+        display: "flex !important",
+        alignItems: "center !important",
+        margin: "80px 0 20px 0 !important",
+        pading: "16px !important",
+        borderRadius: "4px",
+        backgroundColor: "white !important",
+    },
     bodyControlBarItem: {
-        padding: "0 0 0 0 !important",
+        padding: "0 !important",
     },
     bodyControlBarSearchIcon: {
         color: "black !important",
@@ -54,13 +96,13 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "50%",
     },
     footerPagination: {
-        position: "absolute !important",
-        right: "36px !important",
-        bottom: "0 !important",
+        postition: "relative !important",
         display: "inline-flex !important",
         justifyContent: "space-between !important",
         alignItems: "center !important",
         width: "372px !important",
+        marginTop: "20px !important",
+        float: "right !important",
     },
     footerPaginationItem: {
         width: "30px !important",

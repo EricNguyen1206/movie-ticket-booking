@@ -53,26 +53,10 @@ export default function SigIn() {
     const { isLoading } = useSelector((state) => state.user);
     const { status } = useSelector((state) => state.user);
     const { isAuthenticated } = useSelector((state) => state.user);
-    const { account } = useSelector((state) => state.user);
+    const { user } = useSelector((state) => state.user);
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    React.useEffect(() => {
-        if (status === "SUCCESS") {
-            if (isAuthenticated) {
-                alert("You are not authenticated");
-            } else {
-                if (remember) {
-                    console.log(account);
-                    localStorage.setItem("account", { ...account });
-                }
-                navigate("/");
-            }
-        } else if (status === "FAILED") {
-            alert("Login failed");
-        }
-    }, [status]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
