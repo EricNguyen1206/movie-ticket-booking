@@ -40,7 +40,6 @@ const Topbar = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            {console.log("account: " + account)}
             <AppBar id="appbar" className={classes.root}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
@@ -127,11 +126,7 @@ const Topbar = () => {
                                 justifyContent: "center",
                             }}
                         >
-                            <Link
-                                key="PHIM"
-                                to="movies"
-                                className={classes.link}
-                            >
+                            <Link to="movies" className={classes.link}>
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{
@@ -142,11 +137,7 @@ const Topbar = () => {
                                     PHIM
                                 </Button>
                             </Link>
-                            <Link
-                                key="CỤM RẠP"
-                                to="cineplex"
-                                className={classes.link}
-                            >
+                            <Link to="cineplex" className={classes.link}>
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{
@@ -157,11 +148,7 @@ const Topbar = () => {
                                     CỤM RẠP
                                 </Button>
                             </Link>
-                            <Link
-                                key="LIÊN HỆ"
-                                to="#contact"
-                                className={classes.link}
-                            >
+                            <Link to="#contact" className={classes.link}>
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{
@@ -172,25 +159,22 @@ const Topbar = () => {
                                     LIÊN HỆ
                                 </Button>
                             </Link>
-                            {account.role === "R1" ? (
-                                <Link
-                                    key="LIÊN HỆ"
-                                    to="/admin"
-                                    className={classes.link}
-                                >
-                                    <Button
-                                        onClick={handleCloseNavMenu}
-                                        sx={{
-                                            my: 2,
-                                        }}
-                                        className={classes.navLink}
-                                    >
-                                        QUẢN LÝ
-                                    </Button>
-                                </Link>
+                            {/* {account.role === "R1" ? (
+                                
                             ) : (
                                 ""
-                            )}
+                            )} */}
+                            <Link to="/admin" className={classes.link}>
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    sx={{
+                                        my: 2,
+                                    }}
+                                    className={classes.navLink}
+                                >
+                                    QUẢN LÝ
+                                </Button>
+                            </Link>
                         </Box>
 
                         <Box sx={{ flexGrow: 0, display: "flex" }}>

@@ -3,15 +3,15 @@ import axios from "axios";
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_URI,
+    baseURL: process.env.REACT_APP_API,
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) =>
-    Promise.reject(
-      (error.response && error.response.data) || "Something went wrong"
-    )
+    (response) => response,
+    (error) =>
+        Promise.reject(
+            (error.response && error.response.data) || "Something went wrong"
+        )
 );
 
 export default axiosInstance;

@@ -1,5 +1,4 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,61 +11,10 @@ import BlockIcon from "@mui/icons-material/Block";
 import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-    return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-    createData(
-        0,
-        "16 Mar, 2019",
-        "Elvis Presley",
-        "Tupelo, MS",
-        "VISA ⠀•••• 3719",
-        312.44
-    ),
-    createData(
-        1,
-        "16 Mar, 2019",
-        "Paul McCartney",
-        "London, UK",
-        "VISA ⠀•••• 2574",
-        866.99
-    ),
-    createData(
-        2,
-        "16 Mar, 2019",
-        "Tom Scholz",
-        "Boston, MA",
-        "MC ⠀•••• 1253",
-        100.81
-    ),
-    createData(
-        3,
-        "16 Mar, 2019",
-        "Michael Jackson",
-        "Gary, IN",
-        "AMEX ⠀•••• 2000",
-        654.39
-    ),
-    createData(
-        4,
-        "15 Mar, 2019",
-        "Bruce Springsteen",
-        "Long Branch, NJ",
-        "VISA ⠀•••• 5919",
-        212.79
-    ),
-];
-
-function preventDefault(event) {
-    event.preventDefault();
-}
-
-export default function Orders() {
+export default function Orders({ page }) {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const { accounts } = useSelector((state) => state.accounts);
 
     return (
         <React.Fragment>
@@ -84,26 +32,28 @@ export default function Orders() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.id}>
-                            <TableCell>{row.date}</TableCell>
-                            <TableCell>{row.name}</TableCell>
-                            <TableCell>{row.shipTo}</TableCell>
-                            <TableCell>{row.paymentMethod}</TableCell>
-                            <TableCell>{row.paymentMethod}</TableCell>
-                            <TableCell>{row.paymentMethod}</TableCell>
-                            <TableCell align="right">
-                                <Button className={classes.bodyTableBtn}>
-                                    <BorderColorIcon
-                                        style={{ color: "green" }}
-                                    />
-                                </Button>
-                                <Button className={classes.bodyTableBtn}>
-                                    <BlockIcon style={{ color: "red" }} />
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {accounts
+                        .slice(page * 8 - 8, page * 8)
+                        .map((account, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{account.account}</TableCell>
+                                <TableCell>{account.username}</TableCell>
+                                <TableCell>{account.email}</TableCell>
+                                <TableCell>{account.phone}</TableCell>
+                                <TableCell>{account.password}</TableCell>
+                                <TableCell>{account.role}</TableCell>
+                                <TableCell align="right">
+                                    <Button className={classes.bodyTableBtn}>
+                                        <BorderColorIcon
+                                            style={{ color: "green" }}
+                                        />
+                                    </Button>
+                                    <Button className={classes.bodyTableBtn}>
+                                        <BlockIcon style={{ color: "red" }} />
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
                 </TableBody>
             </Table>
         </React.Fragment>

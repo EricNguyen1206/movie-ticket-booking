@@ -29,7 +29,7 @@ import useStyles from "./styles";
 import Validator from "../Validator";
 import { useDispatch, useSelector } from "react-redux";
 // import { signup } from "../../../app/actions/Auth";
-import { userRegister } from "../../../app/reducers/Auth/userSlice";
+import { userSignup } from "../../../app/reducers/Auth/userSlice";
 import { LoadingButton } from "@mui/lab";
 
 function Copyright(props) {
@@ -70,16 +70,6 @@ export default function SigUp() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-            password: data.get("password"),
-            confirm_password: data.get("confirmPassword"),
-            gender: data.get("gender"),
-            firstname: data.get("firstname"),
-            lastname: data.get("lastname"),
-            birthday: birthday,
-            rememberMe: remember,
-        });
         const currentUser = {
             email: data.get("email"),
             password: data.get("password"),
@@ -97,11 +87,11 @@ export default function SigUp() {
             checkConfirm &&
             password
         ) {
-            dispatch(userRegister(currentUser));
+            dispatch(userSignup(currentUser));
             if (remember) {
-                localStorage.removeItem("currentUser");
+                localStorage.removeItem("currentAccount");
                 localStorage.setItem(
-                    "currentUser",
+                    "currentAccount",
                     JSON.stringify(currentUser)
                 );
             }
