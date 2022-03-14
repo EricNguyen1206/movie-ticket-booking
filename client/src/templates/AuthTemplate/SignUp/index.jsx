@@ -28,7 +28,7 @@ import logo from "../../../assets/images/logo.png";
 import useStyles from "./styles";
 import Validator from "../Validator";
 import { useDispatch, useSelector } from "react-redux";
-// import { signup } from "../../../app/actions/Auth";
+import { register } from "../../../app/slices/auth";
 import { userSignup } from "../../../app/reducers/Auth/userSlice";
 import { LoadingButton } from "@mui/lab";
 
@@ -64,8 +64,8 @@ export default function SigUp() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading } = useSelector((state) => state.user);
-    const { user } = useSelector((state) => state.user);
+    const { isLoading } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.auth);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -87,14 +87,7 @@ export default function SigUp() {
             checkConfirm &&
             password
         ) {
-            dispatch(userSignup(currentUser));
-            if (remember) {
-                localStorage.removeItem("currentAccount");
-                localStorage.setItem(
-                    "currentAccount",
-                    JSON.stringify(currentUser)
-                );
-            }
+            dispatch(register(currentUser));
             if (user.email) {
                 navigate("/");
             }

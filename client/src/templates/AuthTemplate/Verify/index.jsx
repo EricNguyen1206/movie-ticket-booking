@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { userVerify } from "../../../app/reducers/Auth/userSlice";
+import { useDispatch } from "react-redux";
+import { verify } from "../../../app/slices/auth";
 
 const Verify = () => {
     const search = useLocation().search;
@@ -9,11 +9,9 @@ const Verify = () => {
     const email = new URLSearchParams(search).get("email");
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { isAuthenticated } = useSelector((state) => state.user);
 
     useEffect(() => {
-        dispatch(userVerify({ token, email }));
-        console.log("isAuthenticated", isAuthenticated);
+        dispatch(verify({ token, email }));
         navigate("/");
     }, []);
 
