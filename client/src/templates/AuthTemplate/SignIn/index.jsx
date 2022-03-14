@@ -18,13 +18,13 @@ import {
     MailOutlineRounded,
     Reddit,
 } from "@mui/icons-material";
-import logo from "../../../assets/images/logo.png";
-import useStyles from "./styles";
+import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../../app/slices/auth";
+import logo from "../../../assets/images/logo.png";
+import useStyles from "./styles";
 import Validator from "../Validator";
-import { userSignIn } from "../../../app/reducers/Auth/userSlice";
-import { LoadingButton } from "@mui/lab";
 
 function Copyright(props) {
     return (
@@ -50,10 +50,7 @@ export default function SigIn() {
     const [checkEmail, setCheckEmail] = React.useState(true);
     const [checkPassword, setCheckPassword] = React.useState(true);
     const [remember, setRemember] = React.useState(false);
-    const { isLoading } = useSelector((state) => state.user);
-    const { status } = useSelector((state) => state.user);
-    const { isAuthenticated } = useSelector((state) => state.user);
-    const { user } = useSelector((state) => state.user);
+    const { isLoggedIn, isLoading } = useSelector((state) => state.auth);
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -66,11 +63,17 @@ export default function SigIn() {
             password: data.get("password"),
         };
         if (checkPassword && checkEmail) {
-            dispatch(userSignIn(account));
+            dispatch(login(account));
         } else {
             alert("Lỗi, vui lòng nhập thông tin chính xác!");
         }
     };
+
+    React.useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/");
+        }
+    }, [isLoggedIn]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -304,7 +307,7 @@ export default function SigIn() {
                                     className={classes.loginBtn}
                                     loading={isLoading}
                                 >
-                                    Submit
+                                    Đăng nhập
                                 </LoadingButton>
                             </Box>
                             <Box

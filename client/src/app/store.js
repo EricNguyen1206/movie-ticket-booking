@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./reducers/Auth/userSlice";
 import accountsReducer from "./reducers/Auth/accountsSlice";
+import auth from "./slices/auth";
+import message from "./slices/message";
 
 export default configureStore({
     reducer: {
-        user: userReducer,
         accounts: accountsReducer,
+        auth: auth,
+        message: message,
         // banners: banners,
         // moviesUser: movies,
         // movieDetails: movieDetails,

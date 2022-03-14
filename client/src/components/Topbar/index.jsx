@@ -16,15 +16,15 @@ import { Link } from "react-router-dom";
 import useStyles from "./style";
 import Logo from "../Logo";
 import { useSelector, useDispatch } from "react-redux";
-import { userSignout } from "../../app/reducers/Auth/userSlice";
+import { logout } from "../../app/slices/auth";
 
 const Topbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { isAuthenticated } = useSelector((state) => state.user);
-    const { account } = useSelector((state) => state.user);
-    const { status } = useSelector((state) => state.user);
+    const { isLoggedIn } = useSelector((state) => state.auth);
+
+    React.useEffect(() => {}, [isLoggedIn]);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -35,7 +35,7 @@ const Topbar = () => {
     };
 
     const handleSignout = () => {
-        dispatch(userSignout());
+        dispatch(logout());
     };
 
     return (
@@ -178,7 +178,7 @@ const Topbar = () => {
                         </Box>
 
                         <Box sx={{ flexGrow: 0, display: "flex" }}>
-                            {status && status === "SUCCESS" ? (
+                            {isLoggedIn ? (
                                 <Button
                                     className={classes.btnLink}
                                     onClick={() => handleSignout()}
