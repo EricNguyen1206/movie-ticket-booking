@@ -9,9 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Account.belongsTo(models.Allcode, {
+      // Account.belongsTo(models.Allcode, {
+      //   foreignKey: "roleId",
+      //   targetKey: "keyMap",
+      //   as: "roleData",
+      // });
+
+      Account.belongsTo(models.Role, {
         foreignKey: "roleId",
-        targetKey: "keyMap",
+        targetKey: "roleId",
         as: "roleData",
       });
 
