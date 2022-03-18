@@ -1,6 +1,6 @@
 let ROLE = {
-  ADMIN: "R1",
-  USER: "R2",
+  ADMIN: { id: 1, value: "Admin" },
+  USER: { id: 2, value: "User" },
 };
 
 module.exports = { ROLE };

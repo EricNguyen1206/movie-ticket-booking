@@ -64,8 +64,13 @@ export default function SigUp() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading } = useSelector((state) => state.auth);
-    const { user } = useSelector((state) => state.auth);
+    const { user,isLoggedIn,isLoading } = useSelector((state) => state.auth);
+
+    React.useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/");
+        }
+    }, [isLoggedIn]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -88,9 +93,9 @@ export default function SigUp() {
             password
         ) {
             dispatch(register(currentUser));
-            if (user.email) {
-                navigate("/");
-            }
+            // if (user.email) {
+            //     navigate("/");
+            // }
         } else {
             alert("Thông tin tài khoản không hợp lệ, vui lòng thử lại!");
         }

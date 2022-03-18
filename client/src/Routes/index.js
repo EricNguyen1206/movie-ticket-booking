@@ -7,6 +7,9 @@ const Home = React.lazy(() => import("../templates/HomeTemplate/Home"));
 const SignIn = React.lazy(() => import("../templates/AuthTemplate/SignIn"));
 const SignUp = React.lazy(() => import("../templates/AuthTemplate/SignUp"));
 const Verify = React.lazy(() => import("../templates/AuthTemplate/Verify"));
+const VerifyAccount = React.lazy(() =>
+  import("../templates/AuthTemplate/VerifyAccount")
+);
 const AdminTemplate = React.lazy(() => import("../templates/AdminTemplate"));
 
 const routeHome = [
@@ -31,7 +34,7 @@ const routeAuth = [
   {
     exact: false,
     path: "/verify-account",
-    element: <Verify />,
+    element: <VerifyAccount />,
   },
 ];
 
