@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { verify } from "../../../app/slices/auth";
+import { verifyAccount } from "../../../app/slices/auth";
 
 const Verify = () => {
     const search = useLocation().search;
@@ -11,7 +11,7 @@ const Verify = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(verify({ token, email }));
+        dispatch(verifyAccount({ token, email }));
         navigate("/");
     }, []);
 

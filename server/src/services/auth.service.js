@@ -38,7 +38,7 @@ let signUp = (data) => {
           email: data.email,
           password: bcrypt.hashSync(data.password, salt),
           isActive: false,
-          roleId: ROLE.USER,
+          roleId: ROLE.USER.id,
           verifyToken: uuidv4(),
         };
         let userItem = {

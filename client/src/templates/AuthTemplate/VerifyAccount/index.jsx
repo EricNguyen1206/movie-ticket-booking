@@ -13,6 +13,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from "react-redux";
 import { userRegister,userVerify } from "../../../app/reducers/Auth/userSlice";
+import { verifyAccount } from "../../../app/slices/auth";
+
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 
@@ -31,7 +33,7 @@ export default function SignIn() {
     const tokenVerify = searchParams.get("token");
     const userEmail = searchParams.get("email")
 
-    const { isLoading,isSuccess, message } = useSelector((state) => state.user);
+    const { isLoading,isSuccess, message } = useSelector((state) => state.auth);
 
 
     useEffect(() => {
@@ -39,10 +41,11 @@ export default function SignIn() {
           (typeof tokenVerify !== "string" && !(tokenVerify instanceof String)) ||
           !userEmail
         ) {
-          navigate("/");
+          // navigate("/");
         } else {
           if (verifying) {
-            dispatch(userVerify({ token: tokenVerify, email: userEmail }))
+            // dispatch(userVerify({ token: tokenVerify, email: userEmail }))
+           dispatch(verifyAccount({ token: tokenVerify, email: userEmail }))
           }
         }
       }, [verifying]);
